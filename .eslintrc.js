@@ -73,7 +73,7 @@ module.exports = {
         ],
         'function-paren-newline': 'error',
         'generator-star-spacing': 'error',
-        'global-require': 'error',
+        'global-require': 'off',
         'grouped-accessor-pairs': 'error',
         'guard-for-in': 'error',
         'handle-callback-err': 'error',
@@ -230,7 +230,7 @@ module.exports = {
             'single'
         ],
         'radix': 'error',
-        'require-atomic-updates': 'error',
+        'require-atomic-updates': 'off',
         'require-await': 'error',
         'require-jsdoc': 'error',
         'require-unicode-regexp': 'off',
