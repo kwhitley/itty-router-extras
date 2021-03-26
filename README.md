@@ -80,12 +80,12 @@ addEventListener('fetch', event =>
 [issues-url]:https://github.com/kwhitley/itty-router-extras/issues
 [npm-image]:https://img.shields.io/npm/v/itty-router-extras.svg
 [npm-url]:http://npmjs.org/package/itty-router-extras
-[travis-image]:https://travis-ci.org/kwhitley/itty-router-extras.svg?branch=v1.x
+[travis-image]:https://travis-ci.org/kwhitley/itty-router-extras.svg?branch=v0.x
 [travis-url]:https://travis-ci.org/kwhitley/itty-router-extras
 [david-image]:https://david-dm.org/kwhitley/itty-router-extras/status.svg
 [david-url]:https://david-dm.org/kwhitley/itty-router-extras
-[coveralls-image]:https://coveralls.io/repos/github/kwhitley/itty-router-extras/badge.svg?branch=v1.x
-[coveralls-url]:https://coveralls.io/github/kwhitley/itty-router-extras?branch=v1.x
+[coveralls-image]:https://coveralls.io/repos/github/kwhitley/itty-router-extras/badge.svg?branch=v0.x
+[coveralls-url]:https://coveralls.io/github/kwhitley/itty-router-extras?branch=v0.x
 
 ## Contributors
 These folks are the real heroes, making open source the powerhouse that it is!  Help out and get your name added to this list! <3
