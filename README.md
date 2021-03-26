@@ -5,18 +5,12 @@
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 [![Open Issues][issues-image]][issues-url]
-<a href="https://npmjs.com/package/itty-router-extras" target="\_parent">
-  <img alt="" src="https://img.shields.io/npm/dm/itty-router-extras.svg" />
-</a>
 <a href="https://github.com/kwhitley/itty-router-extras" target="\_parent">
   <img alt="" src="https://img.shields.io/github/stars/kwhitley/itty-router-extras.svg?style=social&label=Star" />
 </a>
 <a href="https://twitter.com/kevinrwhitley" target="\_parent">
   <img alt="" src="https://img.shields.io/twitter/follow/kevinrwhitley.svg?style=social&label=Follow" />
 </a>
-<!--<a href="https://github.com/kwhitley/itty-router-extras/discussions">
-  <img alt="Join the discussion on Github" src="https://img.shields.io/badge/Github%20Discussions%20%26%20Support-Chat%20now!-blue" />
-</a>-->
 
 An assortment of delicious extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).
 
