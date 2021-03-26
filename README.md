@@ -47,14 +47,13 @@ const router = Router({ base: '/todos' }) // this is a Proxy, not a class
 router.get('/', () => asJSON(todos))
 
 // GET item - only return if found
-router.get('/:id', withParams, ({ id }) =>
-  if (todos[id]) return json(todos[id])
+router.get('/:id', withParams, ({ id }) => {
+  const todo = todos.find(t => t.id === id)
+  if (todo) return json(todo)
 })
 
 // POST to the collection
-router.post('/todos', withContent, ({ content }, event) => {
-  // event.waitUntil(someAsyncPromise) to keep working after the return
-
+router.post('/todos', withContent, ({ content }) => {
   return content
   ? json({
       created: 'todo',
@@ -63,14 +62,13 @@ router.post('/todos', withContent, ({ content }, event) => {
   : error(400, 'You probably need some content for that...')
 )
 
-
 // 404 for everything else
 router.all('*', () => missing('Are you sure about that?'))
 
 // attach the router "handle" to the event handler
 addEventListener('fetch', event =>
   // router.handle expects a Request as the first param, then anything else gets passed along!
-  event.respondWith(router.handle(event.request, event))
+  event.respondWith(router.handle(event.request))
 )
 ```
 
