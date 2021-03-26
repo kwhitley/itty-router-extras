@@ -1,4 +1,4 @@
-import { json } from '../response'
+const { json } = require('../response')
 
 // WRAPPER FUNCTION FOR THROWABLE HANDLERS
 const throwable = (options = {}) => fn => async (request, ...rest) => {
@@ -33,14 +33,14 @@ const throwable = (options = {}) => fn => async (request, ...rest) => {
 
 const ThrowableRouter = (options = {}) => {
   const { middleware = [], ...other } = options
+
   return new Proxy(Router(options), {
-    get: (obj, prop) => {
-      return (route, ...handlers) => {
-        let options = (typeof handlers[handlers.length - 1] === 'object' && handlers.pop()) || {}
+    get: (obj, prop) =>
+      (route, ...handlers) => {
+        let options = typeof handlers[handlers.length - 1] === 'object' && handlers.pop() || {}
 
         return obj[prop](route, withParams, ...middleware, ...handlers.map(throwable(other)))
       }
-    }
   })
 }
 
