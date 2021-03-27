@@ -2540,10 +2540,10 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-itty-router@^2.1.9:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-2.1.9.tgz#cf03c06a1e105e903888e43a7a11803ba47bcc22"
-  integrity sha512-n4hc2DXXdEfWKXj7HNV3cOsD2tc09/Pp5gZ6LWap0eB0iQRgQIWsLAGSyJiMkXXjrejbm2FhSSj3DCyfJ3cCUw==
+itty-router@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-2.2.0.tgz#f7fc8094d7b9fe72ecea075c0d9c5ab12b90953a"
+  integrity sha512-p6UayEs+BcAzIqN0Eou1N5xZKXjcQw0DEVy/eeE04WoREKrra1Vj/eYqGRWR0lceJUGFEGvK0LuVbTrg95n+Xw==
 
 jest-changed-files@^26.6.2:
   version "26.6.2"

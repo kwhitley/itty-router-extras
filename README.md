@@ -20,6 +20,39 @@ An assortment of delicious extras for the calorie-light [itty-router](https://ww
 npm install itty-router itty-router-extras
 ```
 
+# Includes the following:
+
+## class
+**`StatusError(statusCode: number, message: string): Error`**
+throw these to control HTTP status codes that itty responds with.
+
+## middleware (add inline as route handlers)
+**`withContent`**
+safely parses and embeds content request bodies (e.g. text/json) as `request.content`
+
+**`withCookies`**
+embeds cookies into request as `request.cookies` (object)
+
+**`withParams`**
+embeds route params directly into request as a convenience
+
+## response
+**`error(status: number, message: string): Response`**
+returns JSON-formatted Response with `{ error: message, status }` and the matching status code on the response.
+
+**`json(content: object, options: object): Response`**
+returns JSON-formatted Response with options passed to the Response (e.g. headers, status, etc)
+
+**`status(status: number, message?: string): Response`**
+returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
+
+**`text(content: string, options: object): Response`**
+returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`
+
+### routers
+**`ThrowableRouter(options?: object): Proxy`**
+this is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling, rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`.
+
 ## Example
 ```js
 import { Router } from 'itty-router'

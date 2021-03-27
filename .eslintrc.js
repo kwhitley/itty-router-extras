@@ -232,7 +232,7 @@ module.exports = {
         ],
         'radix': 'error',
         'require-atomic-updates': 'off',
-        'require-await': 'error',
+        'require-await': 'off',
         'require-jsdoc': 'error',
         'require-unicode-regexp': 'off',
         'rest-spread-spacing': [
@@ -245,7 +245,7 @@ module.exports = {
         'sort-imports': 'error',
         'sort-vars': 'off',
         'space-before-blocks': 'error',
-        'space-before-function-paren': 'error',
+        'space-before-function-paren': 'off',
         'space-in-parens': [
             'error',
             'never'

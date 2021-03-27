@@ -2,5 +2,6 @@
 module.exports = {
   ...require('./middleware'),
   ...require('./response'),
-  ...require('./routers'),
+  ...require('./router'),
+  ...require('./classes'),
 }
