@@ -34,12 +34,10 @@ npm install itty-router itty-router-extras
 - **[error](#error)** - returns JSON-formatted Response with `{ error: message, status }` and the matching status code on the response.
 - **[json](#json)** - returns JSON-formatted Response with options passed to the Response (e.g. headers, status, etc)
 - **[status](#status)** - returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
-**`text(content: string, options: object): Response`**
-returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`
+- **[text](#text)** - returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`
 
 ### routers
-**`ThrowableRouter(options?: object): Proxy`**
-this is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling, rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`.
+- **[ThrowableRouter](#throwablerouter)** - this is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling, rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`.  Itty core is fantastic (biased review), but let's face it - first unhandled exception and BOOM - your Worker explodes.  This prevents that from happening!
 
 ## Example
 ```js
@@ -129,7 +127,23 @@ router.get('/:collection/:id?', withParams, ({ collection, id }) => {
 
 ### Response
 
-##### `json(content: object, options: object): Response` <a id="#json></a>
+
+##### `error(status: number, message?: string): Response` <a id="error"></a>
+```js
+router.get('/secrets', request => 
+  request.isLoggedIn
+  ? json({ my: 'secrets' })
+  : error(401, 'Not Authenticated')
+)
+
+// GET /secrets -->
+401 {
+  error: 'Not Authenticated',
+  status: 401
+}
+```
+
+##### `json(content: object, options: object): Response` <a id="json"></a>
 ```js
 const todos = [
   { id: 1, text: 'foo' },
@@ -139,7 +153,67 @@ const todos = [
 router.get('/todos', () => json(todos))
 ```
 
-##### `status(status: number, message?: string): Response`
+##### `missing(message?: string): Response` <a id="missing"></a>
+```js
+router.get('/not-found', () => missing('Oops!  We could not find that page.'))
+
+// GET /not-found -->
+404 {
+  error: 'Oops!  We could not find that page.',
+  status: 404
+}
+```
+
+##### `status(status: number, message?: string): Response` <a id="status"></a>
+```js
+router
+  .post('/success', withContent, ({ content }) => status(204, 'Success!'))
+  .post('/silent-success', withContent, ({ content }) => status(204))
+
+// POST /success -->
+204 {
+  message: 'Success!',
+  status: 204
+}
+
+// POST /silent-success -->
+204
+```
+
+##### `text(content: string, options?: object): Response` <a id="text"></a>
+```js
+router.get('/plaintext', () => text('OK!'))
+
+// GET /plaintext -->
+200 OK!
+```
+
+### Routers
+
+#### `ThrowableRouter(options?: object): Proxy` <a id="throwablerouter"></a>
+```js
+import { ThrowableRouter, StatusError } from 'itty-router-extras'
+
+const router = ThrowableRouter()
+
+router
+  .get('/accidental', request => request.oops.this.doesnt.exist)
+  .get('/intentional', request => {
+    throw new StatusError(400, 'Bad Request')
+  })
+
+// GET /accidental
+500 {
+  error: 'Internal Error.',
+  status: 500,
+}
+
+// GET /intentional
+400 {
+  error: 'Bad Request',
+  status: 400,
+}
+```
 
 [twitter-image]:https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fitty-router-extras
 [logo-image]:https://user-images.githubusercontent.com/865416/112549341-a4377300-8d8b-11eb-8977-574967dede99.png
