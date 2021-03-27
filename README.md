@@ -36,17 +36,17 @@ npm install itty-router itty-router-extras
 - **[text](#text)** - returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`
 
 ### routers
-- **[ThrowableRouter](#throwablerouter)** - this is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling, rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`.  Itty core is fantastic (biased review), but let's face it - first unhandled exception and BOOM - your Worker explodes.  This prevents that from happening!
+- **[ThrowableRouter](#throwablerouter)** - this is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling, rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`.  Itty core is fantastic (biased review), but let's face it - first unhandled exception and BOOM - your Worker explodes.  This prevents that from happening!  Personally, this one is an absolute must for my projects to cut down on boilerplate code AND random CF explosions.
 
 ## Example
 ```js
-import { Router } from 'itty-router'
 import {
   json,
   missing,
   error,
   withContent,
   withParams,
+  ThrowableRouter,
 } from 'itty-router-extras'
 
 const todos = [
@@ -55,8 +55,8 @@ const todos = [
   { id: '15', value: 'baz' },
 ]
 
-// create a router
-const router = Router({ base: '/todos' }) // this is a Proxy, not a class
+// create a router (this is just an error-safe wrapper around itty router)
+const router = ThrowableRouter({ base: '/todos' })
 
 // optional shortcut to avoid per-route calls
 // router.all('*', withParams, withContent)
@@ -96,15 +96,27 @@ addEventListener('fetch', event =>
 
 ##### `StatusError(status: number, message: string): Error` <a id="statuserror"></a>
 ```js
+import { ThrowableRouter, StatusError } from 'itty-router-extras'
+
 router.get('/bad', () => {
-  throw new StatusCode(400, 'Bad Request')
+  throw new StatusError(400, 'Bad Request')
 })
+
+// GET /bad
+400 {
+  error: 'Bad Request',
+  status: 400
+}
 ```
 
 ### Middleware
 
 ##### `withContent: function` <a id="withcontent"></a>
 ```js
+import { ThrowableRouter, StatusError } from 'itty-router-extras'
+
+const router = ThrowableRouter()
+
 router
   .post('/form', withContent, ({ content }) => {
     // body content (json, text, or form) is parsed and ready to go, if found.
@@ -122,6 +134,8 @@ router
 
 ##### `withCookies: function` <a id="withcookies"></a>
 ```js
+import { withCookies } from 'itty-router-extras'
+
 router.get('/foo', withCookies, ({ cookies }) => {
   // cookies are parsed from the header into request.cookies
 })
@@ -129,6 +143,8 @@ router.get('/foo', withCookies, ({ cookies }) => {
 
 ##### `withParams: function` <a id="withparams"></a>
 ```js
+import { withParams } from 'itty-router-extras'
+
 router
   .get('/:collection/:id?', withParams, ({ collection, id }) => {
     // route params are embedded into the request for convenience
@@ -144,6 +160,8 @@ router
 
 ##### `error(status: number, message?: string): Response` <a id="error"></a>
 ```js
+import { error, json } from 'itty-router-extras'
+
 router.get('/secrets', request =>
   request.isLoggedIn
   ? json({ my: 'secrets' })
