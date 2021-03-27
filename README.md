@@ -23,7 +23,7 @@ npm install itty-router itty-router-extras
 # Includes the following:
 
 ## class
-**`StatusError(statusCode: number, message: string): Error`**
+[**`StatusError(statusCode: number, message: string): Error`**](#statuserror)
 throw these to control HTTP status codes that itty responds with.
 
 ## middleware (add inline as route handlers)
@@ -103,6 +103,16 @@ addEventListener('fetch', event =>
   // router.handle expects a Request as the first param, then anything else gets passed along!
   event.respondWith(router.handle(event.request))
 )
+```
+
+# Detailed Examples
+
+### StatusError
+##### `StatusError(status: number, message: string): Error`
+```js
+router.get('/bad', () => {
+  throw new StatusCode(400, 'Bad Request')
+})
 ```
 
 [twitter-image]:https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fitty-router-extras
