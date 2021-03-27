@@ -22,30 +22,18 @@ npm install itty-router itty-router-extras
 
 # Includes the following:
 
-## class
-[**`StatusError(statusCode: number, message: string): Error`**](#statuserror)
-throw these to control HTTP status codes that itty responds with.
+### class
+- **[StatusError](#statuserror)** - throw these to control HTTP status codes that itty responds with.
 
-## middleware (add inline as route handlers)
-**`withContent`**
-safely parses and embeds content request bodies (e.g. text/json) as `request.content`
+### middleware (add inline as route handlers)
+- **[withContent](#withcontent)** - safely parses and embeds content request bodies (e.g. text/json) as `request.content`
+- **[withCookies](#withcookies)** - embeds cookies into request as `request.cookies` (object)
+- **[withParams](#withparams)** - embeds route params directly into request as a convenience
 
-**`withCookies`**
-embeds cookies into request as `request.cookies` (object)
-
-**`withParams`**
-embeds route params directly into request as a convenience
-
-## response
-**`error(status: number, message: string): Response`**
-returns JSON-formatted Response with `{ error: message, status }` and the matching status code on the response.
-
-**`json(content: object, options: object): Response`**
-returns JSON-formatted Response with options passed to the Response (e.g. headers, status, etc)
-
-**`status(status: number, message?: string): Response`**
-returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
-
+### response
+- **[error](#error)** - returns JSON-formatted Response with `{ error: message, status }` and the matching status code on the response.
+- **[json](#json)** - returns JSON-formatted Response with options passed to the Response (e.g. headers, status, etc)
+- **[status](#status)** - returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
 **`text(content: string, options: object): Response`**
 returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`
 
@@ -105,7 +93,9 @@ addEventListener('fetch', event =>
 )
 ```
 
-# Detailed Examples
+# API
+
+### Classes
 
 ##### `StatusError(status: number, message: string): Error` <a id="statuserror"></a>
 ```js
@@ -113,6 +103,43 @@ router.get('/bad', () => {
   throw new StatusCode(400, 'Bad Request')
 })
 ```
+
+### Middleware
+
+##### `withContent: function` <a id="withcontent"></a>
+```js
+router.post('/form-data', withContent, ({ content }) => {
+  // body content (json, text, or form) is parsed and ready to go, if found.
+})
+```
+
+##### `withCookies: function` <a id="withcookies"></a>
+```js
+router.get('/foo', withCookies, ({ cookies }) => {
+  // cookies are parsed from the header into request.cookies
+})
+```
+
+##### `withParams: function` <a id="withparams"></a>
+```js
+router.get('/:collection/:id?', withParams, ({ collection, id }) => {
+  // route params are embedded into the request for convenience
+})
+```
+
+### Response
+
+##### `json(content: object, options: object): Response` <a id="#json></a>
+```js
+const todos = [
+  { id: 1, text: 'foo' },
+  { id: 2, text: 'bar' },
+]
+
+router.get('/todos', () => json(todos))
+```
+
+##### `status(status: number, message?: string): Response`
 
 [twitter-image]:https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fitty-router-extras
 [logo-image]:https://user-images.githubusercontent.com/865416/112549341-a4377300-8d8b-11eb-8977-574967dede99.png
