@@ -107,8 +107,7 @@ addEventListener('fetch', event =>
 
 # Detailed Examples
 
-### StatusError
-##### `StatusError(status: number, message: string): Error`
+##### `StatusError(status: number, message: string): Error` <a id="statuserror"></a>
 ```js
 router.get('/bad', () => {
   throw new StatusCode(400, 'Bad Request')
