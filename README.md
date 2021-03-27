@@ -1,7 +1,6 @@
 # ![Itty Router][logo-image]
 
 [![npm package][npm-image]][npm-url]
-[![minified + gzipped size][gzip-image]][gzip-url]
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 [![Open Issues][issues-image]][issues-url]
@@ -12,7 +11,7 @@
   <img alt="" src="https://img.shields.io/twitter/follow/kevinrwhitley.svg?style=social&label=Follow" />
 </a>
 
-An assortment of delicious extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).
+An assortment of delicious (yet lightweight and tree-shakeable) extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).
 
 ## Installation
 
@@ -106,9 +105,19 @@ router.get('/bad', () => {
 
 ##### `withContent: function` <a id="withcontent"></a>
 ```js
-router.post('/form-data', withContent, ({ content }) => {
-  // body content (json, text, or form) is parsed and ready to go, if found.
-})
+router
+  .post('/form', withContent, ({ content }) => {
+    // body content (json, text, or form) is parsed and ready to go, if found.
+  })
+  .post('/otherwise', async request => {
+    try {
+      const content = await request.json()
+
+      // do something with the content
+    } catch (err) {
+      throw new StatusError(400, 'Bad Request')
+    }
+  })
 ```
 
 ##### `withCookies: function` <a id="withcookies"></a>
@@ -120,9 +129,14 @@ router.get('/foo', withCookies, ({ cookies }) => {
 
 ##### `withParams: function` <a id="withparams"></a>
 ```js
-router.get('/:collection/:id?', withParams, ({ collection, id }) => {
-  // route params are embedded into the request for convenience
-})
+router
+  .get('/:collection/:id?', withParams, ({ collection, id }) => {
+    // route params are embedded into the request for convenience
+  })
+  .get('/otherwise/:collection/:id?', ({ params }) => {
+    // this just saves having to extract params from the request.params object
+    const { collection, id } = params
+  })
 ```
 
 ### Response
@@ -130,7 +144,7 @@ router.get('/:collection/:id?', withParams, ({ collection, id }) => {
 
 ##### `error(status: number, message?: string): Response` <a id="error"></a>
 ```js
-router.get('/secrets', request => 
+router.get('/secrets', request =>
   request.isLoggedIn
   ? json({ my: 'secrets' })
   : error(401, 'Not Authenticated')
