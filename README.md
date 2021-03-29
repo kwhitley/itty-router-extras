@@ -55,10 +55,10 @@ const todos = [
   { id: '15', value: 'baz' },
 ]
 
-// create a router (this is just an error-safe wrapper around itty router)
+// create an error-safe itty router
 const router = ThrowableRouter({ base: '/todos' })
 
-// optional shortcut to avoid per-route calls
+// optional [safe] shortcut to avoid per-route calls below
 // router.all('*', withParams, withContent)
 
 // GET collection index
@@ -67,12 +67,15 @@ router.get('/', () => asJSON(todos))
 // GET item - only return if found
 router.get('/:id', withParams, ({ id }) => {
   const todo = todos.find(t => t.id === id)
-  if (todo) return json(todo)
+
+  if (todo) {
+    return json(todo)
+  }
 })
 
 // POST to the collection
-router.post('/todos', withContent, ({ content }) => {
-  return content
+router.post('/', withContent, ({ content }) =>
+  content
   ? json({
       created: 'todo',
       value: content,
@@ -85,7 +88,6 @@ router.all('*', () => missing('Are you sure about that?'))
 
 // attach the router "handle" to the event handler
 addEventListener('fetch', event =>
-  // router.handle expects a Request as the first param, then anything else gets passed along!
   event.respondWith(router.handle(event.request))
 )
 ```
