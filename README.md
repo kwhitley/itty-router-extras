@@ -13,6 +13,8 @@
 
 An assortment of delicious (yet lightweight and tree-shakeable) extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).
 
+#### DISCLAIMER: This package is in draft-mode, so the functionality and API may change over the next week or so until we solidify and release a v1.x.  Then it should remain stable for the foreseeable future!
+
 ## Installation
 
 ```
@@ -32,6 +34,7 @@ npm install itty-router itty-router-extras
 ### response
 - **[error](#error)** - returns JSON-formatted Response with `{ error: message, status }` and the matching status code on the response.
 - **[json](#json)** - returns JSON-formatted Response with options passed to the Response (e.g. headers, status, etc)
+- **[missing](#missing)** - returns JSON-formatted 404 Response with `{ error: message, status: 404 }`
 - **[status](#status)** - returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
 - **[text](#text)** - returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`
 
@@ -44,6 +47,7 @@ import {
   json,
   missing,
   error,
+  status,
   withContent,
   withParams,
   ThrowableRouter,
@@ -58,28 +62,22 @@ const todos = [
 // create an error-safe itty router
 const router = ThrowableRouter({ base: '/todos' })
 
-// optional [safe] shortcut to avoid per-route calls below
-// router.all('*', withParams, withContent)
-
 // GET collection index
-router.get('/', () => asJSON(todos))
+router.get('/', () => json(todos))
 
-// GET item - only return if found
+// GET item
 router.get('/:id', withParams, ({ id }) => {
-  const todo = todos.find(t => t.id === id)
+  const todo = todos.find(t => t.id === Number(id))
 
-  if (todo) {
-    return json(todo)
-  }
+  return todo
+  ? json(todo)
+  : missing('That todo was not found.')
 })
 
 // POST to the collection
 router.post('/', withContent, ({ content }) =>
   content
-  ? json({
-      created: 'todo',
-      value: content,
-    })
+  ? status(204) // send a 204 no-content response
   : error(400, 'You probably need some content for that...')
 )
 
@@ -97,6 +95,7 @@ addEventListener('fetch', event =>
 ### Classes
 
 ##### `StatusError(status: number, message: string): Error` <a id="statuserror"></a>
+Throw these to control HTTP status codes that itty responds with.
 ```js
 import { ThrowableRouter, StatusError } from 'itty-router-extras'
 
@@ -114,6 +113,7 @@ router.get('/bad', () => {
 ### Middleware
 
 ##### `withContent: function` <a id="withcontent"></a>
+Safely parses and embeds content request bodies (e.g. text/json) as `request.content`.
 ```js
 import { ThrowableRouter, StatusError } from 'itty-router-extras'
 
@@ -135,6 +135,7 @@ router
 ```
 
 ##### `withCookies: function` <a id="withcookies"></a>
+Embeds cookies into request as `request.cookies` (object).
 ```js
 import { withCookies } from 'itty-router-extras'
 
@@ -144,6 +145,8 @@ router.get('/foo', withCookies, ({ cookies }) => {
 ```
 
 ##### `withParams: function` <a id="withparams"></a>
+Embeds route params directly into request as a convenience.  *NOTE: `withParams` cannot be applied globally upstream,
+as it will have seen no route params at this stage (to spread into the request).*
 ```js
 import { withParams } from 'itty-router-extras'
 
@@ -161,6 +164,7 @@ router
 
 
 ##### `error(status: number, message?: string): Response` <a id="error"></a>
+Returns JSON-formatted Response with `{ error: message, status }` and the matching status code on the response.
 ```js
 import { error, json } from 'itty-router-extras'
 
@@ -178,6 +182,7 @@ router.get('/secrets', request =>
 ```
 
 ##### `json(content: object, options: object): Response` <a id="json"></a>
+Returns JSON-formatted Response with options passed to the Response (e.g. headers, status, etc).
 ```js
 const todos = [
   { id: 1, text: 'foo' },
@@ -199,6 +204,7 @@ router.get('/not-found', () => missing('Oops!  We could not find that page.'))
 ```
 
 ##### `status(status: number, message?: string): Response` <a id="status"></a>
+Returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
 ```js
 router
   .post('/success', withContent, ({ content }) => status(204, 'Success!'))
@@ -215,6 +221,7 @@ router
 ```
 
 ##### `text(content: string, options?: object): Response` <a id="text"></a>
+Returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`.
 ```js
 router.get('/plaintext', () => text('OK!'))
 
@@ -225,6 +232,7 @@ router.get('/plaintext', () => text('OK!'))
 ### Routers
 
 #### `ThrowableRouter(options?: object): Proxy` <a id="throwablerouter"></a>
+This is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling, rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`.
 ```js
 import { ThrowableRouter, StatusError } from 'itty-router-extras'
 
