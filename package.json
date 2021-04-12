@@ -1,6 +1,6 @@
 {
   "name": "itty-router-extras",
-  "version": "0.3.0-next.0",
+  "version": "0.3.0-next.1",
   "description": "An assortment of delicious extras for the calorie-light itty-router.",
   "main": ".index.js",
   "keywords": [
