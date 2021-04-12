@@ -2,17 +2,12 @@
   "name": "itty-router-extras",
   "version": "0.3.0-next.0",
   "description": "An assortment of delicious extras for the calorie-light itty-router.",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "main": ".index.js",
   "keywords": [
     "router",
     "cloudflare",
     "workers",
     "serverless",
-    "express",
     "regex",
     "routing",
     "api",
@@ -20,10 +15,11 @@
     "params",
     "middleware",
     "nested",
-    "rest",
-    "crud",
-    "query",
-    "paramaters"
+    "helpers",
+    "utils",
+    "cookies",
+    "content",
+    "cors"
   ],
   "scripts": {
     "lint": "npx eslint src",

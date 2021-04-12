@@ -4,21 +4,24 @@ const { ThrowableRouter } = require('../router/ThrowableRouter')
 const { withContent } = require('./withContent')
 
 describe('middleware/withContent', () => {
-  it('returns with text payload', async () => {
+  it('returns with json payload', async () => {
     const router = ThrowableRouter()
-    const handler = jest.fn(req => req)
+    const handler = jest.fn(req => req.content)
+    const payload = { foo: 'bar' }
 
-    router
-      .post('/', withContent, handler)
+    router.post('/', withContent, handler)
 
     const request = new Request('https://example.com/', {
       method: 'post',
-      body: JSON.stringify({ foo: 'bar' }),
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     })
 
     await router.handle(request)
 
     expect(handler).toHaveBeenCalled()
-    // expect(handler).toHaveReturnedWith('foo')
+    expect(handler).toHaveReturnedWith(payload)
   })
 })
