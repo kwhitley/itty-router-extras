@@ -319,7 +319,7 @@ router
 exports default {
   fetch: (request, ...args) => router
                                  .handle(request, ...args)
-                                 .catch(err => {
+                                 .catch(async err => {
                                    // do something fancy with the error
                                    await logTheErrorSomewhere({
                                      url: request.url,
@@ -333,8 +333,7 @@ exports default {
 
 // GET /accidental
 500 {
-  error: 'Cannot find "this" of undefined...',
-  stack: 'Cannot find "this" of undefined blah blah blah on line 6...',
+  error: 'Internal Serverless Error',
   status: 500,
 }
 ```
