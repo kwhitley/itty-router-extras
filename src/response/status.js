@@ -5,7 +5,10 @@ const status = (status, message) =>
   ? json({
       ...typeof message === 'object'
         ? message
-        : { message },
+        : {
+            status,
+            message,
+          },
     }, { status })
   : new Response(null, { status })
 

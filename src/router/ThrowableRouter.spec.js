@@ -20,9 +20,11 @@ describe('router/ThrowableRouter', () => {
       router.get('/breaks', request => request.will.throw)
 
       const response = await router.handle(new Request('https://slick/breaks'))
-      const payload = await response.json()
 
       expect(response.status).toBe(500)
+
+      const payload = await response.json()
+
       expect(payload.error).not.toBeUndefined()
       expect(payload.status).toBe(500)
     })

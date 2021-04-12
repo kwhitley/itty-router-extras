@@ -12,6 +12,7 @@ const ThrowableRouter = (options = {}) => {
         ? obj[prop](...args).catch(err => error(
             err.status || 500,
             {
+              status: err.status || 500,
               error: err.message,
               stack: stack && err.stack || undefined
             },

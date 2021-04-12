@@ -20,7 +20,7 @@ describe('response/error', () => {
 
       expect(response instanceof Response).toBe(true)
       expect(response.status).toBe(400)
-      expect(await response.json()).toEqual({ status: 400, ...expected })
+      expect(await response.json()).toEqual(expected)
     })
   })
 })
