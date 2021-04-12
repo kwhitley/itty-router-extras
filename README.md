@@ -164,7 +164,8 @@ router
 
 
 ##### `error(status: number, message?: string): Response` <a id="error"></a>
-Returns JSON-formatted Response with `{ error: message, status }` and the matching status code on the response.
+##### `error(status: number, payload?: object): Response`
+Returns JSON-formatted Response with `{ error: message, status }` (or custom payload) and the matching status code on the response.
 ```js
 import { error, json } from 'itty-router-extras'
 
@@ -178,6 +179,12 @@ router.get('/secrets', request =>
 401 {
   error: 'Not Authenticated',
   status: 401
+}
+
+// custom payloads...
+error(500, { custom: 'payload' }) -->
+500 {
+  custom: 'payload'
 }
 ```
 
@@ -193,31 +200,46 @@ router.get('/todos', () => json(todos))
 ```
 
 ##### `missing(message?: string): Response` <a id="missing"></a>
+##### `missing(payload?: object): Response`
 ```js
-router.get('/not-found', () => missing('Oops!  We could not find that page.'))
+router
+  .get('/not-found', () => missing('Oops!  We could not find that page.'))
+  .get('/custom-not-found', () => missing({ message: 'Are you sure about that?' }))
 
 // GET /not-found -->
 404 {
   error: 'Oops!  We could not find that page.',
   status: 404
 }
+
+// GET /custom-not-found -->
+404 {
+  message: 'Are you sure about that?'
+}
 ```
 
 ##### `status(status: number, message?: string): Response` <a id="status"></a>
+##### `status(status: number, payload?: object): Response`
 Returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
 ```js
 router
-  .post('/success', withContent, ({ content }) => status(204, 'Success!'))
+  .post('/success', withContent, ({ content }) => status(201, 'Created!'))
   .post('/silent-success', withContent, ({ content }) => status(204))
+  .post('/custom-success', withContent, ({ content }) => status(201, { created: 'Todo#1' }))
 
 // POST /success -->
-204 {
-  message: 'Success!',
-  status: 204
+201 {
+  message: 'Created!',
+  status: 201
 }
 
 // POST /silent-success -->
 204
+
+// POST /custom-success -->
+204 {
+  created: 'Todo#1'
+}
 ```
 
 ##### `text(content: string, options?: object): Response` <a id="text"></a>
@@ -232,7 +254,7 @@ router.get('/plaintext', () => text('OK!'))
 ### Routers
 
 #### `ThrowableRouter(options?: object): Proxy` <a id="throwablerouter"></a>
-This is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling, rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`.
+This is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling (with automatic response), rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`. **For more elaborate error handling, such as logging errors before a response, [use Router from itty-router (see example)](#advanced-error-handling).**
 ```js
 import { ThrowableRouter, StatusError } from 'itty-router-extras'
 
@@ -244,6 +266,10 @@ router
     throw new StatusError(400, 'Bad Request')
   })
 
+exports default {
+  fetch: router.handle
+}
+
 // GET /accidental
 500 {
   error: 'Internal Error.',
@@ -254,6 +280,62 @@ router
 400 {
   error: 'Bad Request',
   status: 400,
+}
+```
+
+Adding stack traces via `{ stack: true }`:
+```js
+import { ThrowableRouter } from 'itty-router-extras'
+
+const router = ThrowableRouter({ stack: true })
+
+router
+  .get('/accidental', request => request.oops.this.doesnt.exist)
+
+exports default {
+  fetch: router.handle
+}
+
+// GET /accidental
+500 {
+  error: 'Cannot find "this" of undefined...',
+  stack: 'Cannot find "this" of undefined blah blah blah on line 6...',
+  status: 500,
+}
+```
+
+### Advanced Error Handling
+Once you need to control more elaborate error handling, simply ditch `ThrowableRouter` (because it will catch before you can ;), and add your own `.catch(err)` to the core itty `Router` as follows:
+```js
+import { Router } from 'itty-router'
+import { error } from 'itty-router-extras'
+import { logTheErrorSomewhere } from 'some-other-repo'
+
+const router = Router()
+
+router
+  .get('/accidental', request => request.oops.this.doesnt.exist)
+
+exports default {
+  fetch: (request, ...args) => router
+                                 .handle(request, ...args)
+                                 .catch(err => {
+                                   // do something fancy with the error
+                                   await logTheErrorSomewhere({
+                                     url: request.url,
+                                     error: err.message,
+                                   })
+
+                                   // then return an error response to the user/request
+                                   return error(500, 'Internal Serverless Error')
+                                 })
+}
+
+// GET /accidental
+500 {
+  error: 'Cannot find "this" of undefined...',
+  stack: 'Cannot find "this" of undefined blah blah blah on line 6...',
+  status: 500,
 }
 ```
 
