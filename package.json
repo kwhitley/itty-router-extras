@@ -1,8 +1,8 @@
 {
   "name": "itty-router-extras",
-  "version": "0.3.0-next.1",
+  "version": "0.3.0-next.2",
   "description": "An assortment of delicious extras for the calorie-light itty-router.",
-  "main": ".index.js",
+  "main": "./index.js",
   "keywords": [
     "router",
     "cloudflare",
@@ -30,7 +30,7 @@
     "prerelease": "yarn verify",
     "prebuild": "rimraf dist",
     "build": "terser-folder src -eo dist --pattern '**/*.js,!**/*spec.js' -x .js",
-    "release": "release --tag --push"
+    "release": "release --tag --push --src=dist"
   },
   "repository": {
     "type": "git",
