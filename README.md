@@ -11,7 +11,7 @@
   <img alt="" src="https://img.shields.io/twitter/follow/kevinrwhitley.svg?style=social&label=Follow" />
 </a>
 
-An assortment of delicious (yet lightweight and tree-shakeable) extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).
+An assortment of delicious (yet lightweight and tree-shakeable) extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).  These further simplify routing code!
 
 #### DISCLAIMER: This package is in draft-mode, so the functionality and API may change over the next week or so until we solidify and release a v1.x.  Then it should remain stable for the foreseeable future!
 
