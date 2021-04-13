@@ -358,3 +358,6 @@ These folks are the real heroes, making open source the powerhouse that it is!  
 
 #### Core, Concepts, and Codebase
 - [@mvasigh](https://github.com/mvasigh) - for constantly discussing these ridiculously-in-the-weeds topics with me.  And then for writing the TS interfaces (or simply re-writing in TS), right Mehdi??
+
+#### Fixes & Docs
+- [@rubnogueira](https://github.com/rubnogueira)
