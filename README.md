@@ -188,7 +188,7 @@ error(500, { custom: 'payload' }) -->
 }
 ```
 
-##### `json(content: object, options: object): Response` <a id="json"></a>
+##### `json(content: object, options?: object): Response` <a id="json"></a>
 Returns JSON-formatted Response with options passed to the Response (e.g. headers, status, etc).
 ```js
 const todos = [
@@ -223,9 +223,12 @@ router
 Returns JSON-formatted Response with `{ message, status }` and the matching status code on the response.
 ```js
 router
-  .post('/success', withContent, ({ content }) => status(201, 'Created!'))
   .post('/silent-success', withContent, ({ content }) => status(204))
+  .post('/success', withContent, ({ content }) => status(201, 'Created!'))
   .post('/custom-success', withContent, ({ content }) => status(201, { created: 'Todo#1' }))
+
+// POST /silent-success -->
+204
 
 // POST /success -->
 201 {
@@ -233,11 +236,8 @@ router
   status: 201
 }
 
-// POST /silent-success -->
-204
-
 // POST /custom-success -->
-204 {
+201 {
   created: 'Todo#1'
 }
 ```
