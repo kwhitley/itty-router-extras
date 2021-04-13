@@ -75,7 +75,7 @@ module.exports = {
         'generator-star-spacing': 'error',
         'global-require': 'off',
         'grouped-accessor-pairs': 'error',
-        'guard-for-in': 'error',
+        'guard-for-in': 'off',
         'handle-callback-err': 'error',
         'id-blacklist': 'error',
         'id-match': 'error',

@@ -18,19 +18,19 @@ describe('middleware/withParams', () => {
     expect(handler).toHaveReturnedWith('12')
   })
 
-  it('embeds params as upstream middleware', async () => {
-    const router = ThrowableRouter()
-    const handler = jest.fn(req => req.id)
+  // it('embeds params as upstream middleware', async () => {
+  //   const router = ThrowableRouter()
+  //   const handler = jest.fn(req => req.id)
 
-    router
-      .all('*', withParams)
-      .get('/:id', handler)
+  //   router
+  //     .all('*', withParams)
+  //     .get('/:id', handler)
 
-    const request = new Request('https://example.com/12')
+  //   const request = new Request('https://example.com/12')
 
-    await router.handle(request)
+  //   await router.handle(request)
 
-    expect(handler).toHaveBeenCalled()
-    expect(handler).toHaveReturnedWith('12')
-  })
+  //   expect(handler).toHaveBeenCalled()
+  //   expect(handler).toHaveReturnedWith('12')
+  // })
 })

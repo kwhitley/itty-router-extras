@@ -145,13 +145,18 @@ router.get('/foo', withCookies, ({ cookies }) => {
 ```
 
 ##### `withParams: function` <a id="withparams"></a>
-Embeds route params directly into request as a convenience.  *NEW in v0.3.x: `withParams` can now be applied globally upstream, thanks to some proxy magic!*
+Embeds route params directly into request as a convenience.  *NOTE: `withParams` cannot be applied globally upstream, as it will have seen no route params at this stage (to spread into the request).*
 ```js
-import { withParams, json } from 'itty-router-extras'
+import { withParams } from 'itty-router-extras'
 
 router
-  .get('*', withParams) // apply globally upstream or per-route
-  .get('/:collection/:id?', ({ collection, id }) => json({ collection, id }))
+  .get('/:collection/:id?', withParams, ({ collection, id }) => {
+    // route params are embedded into the request for convenience
+  })
+  .get('/otherwise/:collection/:id?', ({ params }) => {
+    // this just saves having to extract params from the request.params object
+    const { collection, id } = params
+  })
 ```
 
 ### Response
