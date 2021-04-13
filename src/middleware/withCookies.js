@@ -8,7 +8,7 @@ const withCookies = request => {
       .reduce((acc, [key, value]) => {
         acc[key] = value
 
-return acc
+        return acc
       }, {})
   } catch (err) {}
 }
