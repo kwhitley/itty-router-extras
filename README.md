@@ -254,7 +254,7 @@ router.get('/plaintext', () => text('OK!'))
 ### Routers
 
 #### `ThrowableRouter(options?: object): Proxy` <a id="throwablerouter"></a>
-This is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling (with automatic response), rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`. **For more elaborate error handling, such as logging errors before a response, [use Router from itty-router (see example)](#advanced-error-handling).**
+This is a convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling (with automatic response), rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`. **For more elaborate error handling, such as logging errors before a response, [use the core Router from itty-router (see example)](#advanced-error-handling).**
 ```js
 import { ThrowableRouter, StatusError } from 'itty-router-extras'
 
@@ -305,7 +305,7 @@ exports default {
 ```
 
 ### Advanced Error Handling
-Once you need to control more elaborate error handling, simply ditch `ThrowableRouter` (because it will catch before you can ;), and add your own `.catch(err)` to the core itty `Router` as follows:
+Once you need to control more elaborate error handling, simply ditch `ThrowableRouter` (because it will catch and respond before you can), and add your own `.catch(err)` to the core itty `Router` as follows:
 ```js
 import { Router } from 'itty-router'
 import { error } from 'itty-router-extras'
@@ -319,7 +319,7 @@ router
 exports default {
   fetch: (request, ...args) => router
                                  .handle(request, ...args)
-                                 .catch(err => {
+                                 .catch(async err => {
                                    // do something fancy with the error
                                    await logTheErrorSomewhere({
                                      url: request.url,
@@ -333,8 +333,7 @@ exports default {
 
 // GET /accidental
 500 {
-  error: 'Cannot find "this" of undefined...',
-  stack: 'Cannot find "this" of undefined blah blah blah on line 6...',
+  error: 'Internal Serverless Error',
   status: 500,
 }
 ```
@@ -359,3 +358,6 @@ These folks are the real heroes, making open source the powerhouse that it is!  
 
 #### Core, Concepts, and Codebase
 - [@mvasigh](https://github.com/mvasigh) - for constantly discussing these ridiculously-in-the-weeds topics with me.  And then for writing the TS interfaces (or simply re-writing in TS), right Mehdi??
+
+#### Fixes & Docs
+- [@rubnogueira](https://github.com/rubnogueira)

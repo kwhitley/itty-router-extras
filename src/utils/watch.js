@@ -1,5 +1,5 @@
 const watch = (predicate, fn) => request => {
-  request.proxy = new Proxy(request, {
+  request.proxy = new Proxy(request.proxy || request, {
     set: (obj, prop, value) => {
       obj[prop] = value
 

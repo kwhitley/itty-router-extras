@@ -2,7 +2,14 @@ const { json } = require('./json')
 
 const error = (
   status = 500,
-  message = 'Internal Server Error.',
-) => json({ error: message, status }, { status })
+  content = 'Internal Server Error.',
+) => json({
+  ...(typeof content === 'object'
+    ? content
+    : {
+        status,
+        error: content,
+      }),
+}, { status })
 
 module.exports = { error }
