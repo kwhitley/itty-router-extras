@@ -5,7 +5,7 @@ const withCookies = request => {
     request.cookies = (request.headers.get('Cookie') || '')
       .split(/;\s*/)
       .map(pair => pair.split('='))
-      .reduce((acc, [key, value]) => (acc[key] = value) && acc, {})
+      .reduce((acc, [key, value]) => (acc = {...acc, [key]: value}, {})
   } catch (err) {}
 }
 
