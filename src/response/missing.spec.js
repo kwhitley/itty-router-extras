@@ -5,7 +5,7 @@ const { missing } = require('./missing')
 const message = 'We could not find that resource.'
 
 describe('response/missing', () => {
-  describe(`missing(message)`, () => {
+  describe('missing(message)', () => {
     it('returns a 404 JSON Response with content', async () => {
       const response = missing(message)
 
