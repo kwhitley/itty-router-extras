@@ -115,7 +115,7 @@ router.get('/bad', () => {
 ##### `withContent: function` <a id="withcontent"></a>
 Safely parses and embeds content request bodies (e.g. text/json) as `request.content`.
 ```js
-import { ThrowableRouter, StatusError } from 'itty-router-extras'
+import { withContent, ThrowableRouter, StatusError } from 'itty-router-extras'
 
 const router = ThrowableRouter()
 
