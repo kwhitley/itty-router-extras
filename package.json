@@ -2,7 +2,11 @@
   "name": "itty-router-extras",
   "version": "0.4.2",
   "description": "An assortment of delicious extras for the calorie-light itty-router.",
-  "main": "./index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/itty-router-extras.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "keywords": [
     "router",
     "cloudflare",
@@ -28,7 +32,7 @@
     "dev": "yarn lint && jest --verbose --watch src",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "prerelease": "yarn verify",
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf dist && mkdir dist && node prebuild.js && cp src/itty-router-extras.d.ts dist",
     "build": "terser-folder src -eo dist --pattern '**/*.js,!**/*spec.js' -x .js",
     "release": "release --tag --push --src=dist"
   },
