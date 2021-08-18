@@ -54,9 +54,9 @@ import {
 } from 'itty-router-extras'
 
 const todos = [
-  { id: '13', value: 'foo' },
-  { id: '14', value: 'bar' },
-  { id: '15', value: 'baz' },
+  { id: 13, value: 'foo' },
+  { id: 14, value: 'bar' },
+  { id: 15, value: 'baz' },
 ]
 
 // create an error-safe itty router
