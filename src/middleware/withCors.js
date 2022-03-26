@@ -15,7 +15,7 @@ const withCors = (options = {}) => request => {
   // Handle standard OPTIONS request.
   return new Response(null, {
     headers: {
-      'Allow': `${methods}, HEAD, OPTIONS`,
+      'Allow': `${corsHeaders['Access-Control-Allow-Methods']}, HEAD, OPTIONS`,
     }
   })
 }
