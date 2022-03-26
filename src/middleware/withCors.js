@@ -1,24 +1,5 @@
 const withCors = (options = {}) => request => {
-  const {
-    origin = '*',
-    methods = 'GET, POST, PATCH, DELETE',
-    headers = 'authorization, referer, origin, content-type',
-    credentials = false,
-  } = options
-  const referer = request.headers.get('Referer')
-  const url = new URL(referer)
-  const allowedOrigin = url.origin.match(/[^\w](slick\.af)|(localhost:3000)$/)
-                      ? url.origin
-                      : 'https://slick.af'
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Methods': methods,
-    'Access-Control-Allow-Headers': headers,
-  }
-
-  if (allowCredentials) {
-    corsHeaders['Access-Control-Allow-Credentials'] = 'true'
-  }
+  const corsHeaders = getHeaders(options, request.headers.get('Referer'));
 
   if (
     request.headers.get('Origin') !== null &&
@@ -34,26 +15,18 @@ const withCors = (options = {}) => request => {
   // Handle standard OPTIONS request.
   return new Response(null, {
     headers: {
-      'Allow': `${methods} , HEAD, OPTIONS`,
+      'Allow': `${methods}, HEAD, OPTIONS`,
     }
   })
 }
 
-const addCorsHeaders = request => response => {
-  let allowedOrigin = 'https://slick.af'
-  const referer = request.headers.get('Referer')
-
-  if (referer) {
-    const url = new URL(referer)
-    allowedOrigin = url.origin.match(/[^\w](slick\.af)|(localhost:3000)$/)
-                  ? url.origin
-                  : allowedOrigin
-  }
+const addCorsHeaders = options => request => response => {
+  const corsHeaders = getHeaders(options, request.headers.get('Referer'));
 
   try {
-    response.headers.set('Access-Control-Allow-Origin', allowedOrigin)
-    response.headers.set('Access-Control-Allow-Methods', 'GET, HEAD, POST, PATCH, DELETE, OPTIONS')
-    response.headers.set('Access-Control-Allow-Credentials', 'true')
+    for (const [ key, value ] of Object.entries(corsHeaders)) {
+      response.headers.set(key, value)
+    }
   } catch (err) {
     // couldn't modify headers
   }
@@ -61,4 +34,33 @@ const addCorsHeaders = request => response => {
   return response
 }
 
-module.exports = { withCors }
+const getHeaders = (options, referer) => {
+  const {
+    origin = '*',
+    methods = 'GET, POST, PATCH, DELETE',
+    headers = 'authorization, referer, origin, content-type',
+    credentials = false,
+  } = options
+
+  let allowedOrigin = origin;
+  if (referer && origin !== '*') {
+    const url = new URL(referer)
+    const domain = new URL(origin).host.split('.').slice(-2).join('.');
+    allowedOrigin = url.origin.match(new RegExp(`((/|\\.)${domain.replace('.', '\\.')}|localhost:\\d+)$`))
+                  ? url.origin
+                  : origin
+  }
+
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': methods,
+    'Access-Control-Allow-Headers': headers,
+  }
+
+  if (credentials) {
+    corsHeaders['Access-Control-Allow-Credentials'] = 'true'
+  }
+  return corsHeaders;
+}
+
+module.exports = { withCors, addCorsHeaders }
