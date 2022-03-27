@@ -29,5 +29,6 @@ export function withCors(options?: CorsOptions): Response;
 export function withParams(request: Request): void;
 
 export class StatusError {
+  status?: number;
   constructor(status?: number, message?: string);
 }
