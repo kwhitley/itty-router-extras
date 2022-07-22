@@ -39,7 +39,7 @@ npm install itty-router itty-router-extras
 - **[text](#text)** - returns plaintext-formatted Response with options passed to the Response (e.g. headers, status, etc). This is simply a normal Response, but included for code-consistency with `json()`
 
 ### routers
-- **[ThrowableRouter](#throwablerouter)** - this is anauto-magic convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling (with automatic response), rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`. Use this if you don't need to intercept errors for logging - otherwise, [use itty core Router with .catch()].(#advanced-error-handling).
+- **[ThrowableRouter](#throwablerouter)** - this is an auto-magic convenience wrapper around [itty-router](https://www.npmjs.com/package/itty-router) that simply adds automatic exception handling (with automatic response), rather than requiring `try/catch` blocks within your middleware/handlers, or manually calling a `.catch(error)` on the `router.handle`. Use this if you don't need to intercept errors for logging - otherwise, [use itty core Router with .catch()](#advanced-error-handling).
 
 ## Example
 ```js
