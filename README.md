@@ -13,7 +13,7 @@
 
 An assortment of delicious (yet lightweight and tree-shakeable) extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).  These further simplify routing code!
 
-#### DISCLAIMER: This package is in draft-mode, so the functionality and API may change over the next week or so until we solidify and release a v1.x.  Then it should remain stable for the foreseeable future!
+#### NOTICE: This package will soon become part of itty-router core (as itty-router/extras).  At such time, this library will be deprecated in favor of just using the core library.  Stay tuned or [follow me on Twitter](https://twitter.com/kevinrwhitley), where I'll be announcing it the moment it hits NPM!
 
 ## Installation
 
