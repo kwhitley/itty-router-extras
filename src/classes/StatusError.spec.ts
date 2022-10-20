@@ -1,4 +1,4 @@
-const { StatusError } = require('./StatusError')
+import { StatusError } from './StatusError'
 
 const message = 'You messed up!'
 

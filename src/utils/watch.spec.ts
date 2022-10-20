@@ -1,23 +1,19 @@
-require('isomorphic-fetch')
-
-const { ThrowableRouter } = require('../router/ThrowableRouter')
-const { watch } = require('./watch')
+import { ThrowableRouter } from '../router/ThrowableRouter'
+import { watch } from './watch'
 
 describe('utils/watch', () => {
   it('creates reactive middleware (string prop)', async () => {
     const router = ThrowableRouter()
-    const watcher = jest.fn((value, prop, request) => ({ prop, value }))
-    const handler = jest.fn(req => req.foo)
+    const watcher = vi.fn((value, prop, request) => ({ prop, value }))
+    const handler = vi.fn((req) => req.foo)
 
     const watchFoo = watch('foo', watcher)
 
-    const modifyFoo = request => {
+    const modifyFoo = (request) => {
       request.foo = 'new foo'
     }
 
-    router
-      .all('*', watchFoo, modifyFoo)
-      .get('/:id', handler)
+    router.all('*', watchFoo, modifyFoo).get('/:id', handler)
 
     const request = new Request('https://example.com/12')
 
@@ -30,18 +26,16 @@ describe('utils/watch', () => {
 
   it('creates reactive middleware (function predicate)', async () => {
     const router = ThrowableRouter()
-    const watcher = jest.fn((value, prop, request) => ({ prop, value }))
-    const handler = jest.fn(req => req.foo)
+    const watcher = vi.fn((value, prop, request) => ({ prop, value }))
+    const handler = vi.fn((req) => req.foo)
 
-    const watchFoo = watch(prop => prop === 'foo', watcher)
+    const watchFoo = watch((prop) => prop === 'foo', watcher)
 
-    const modifyFoo = request => {
+    const modifyFoo = (request) => {
       request.foo = 'new foo'
     }
 
-    router
-      .all('*', watchFoo, modifyFoo)
-      .get('/:id', handler)
+    router.all('*', watchFoo, modifyFoo).get('/:id', handler)
 
     const request = new Request('https://example.com/12')
 

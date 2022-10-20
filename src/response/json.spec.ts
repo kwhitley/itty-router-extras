@@ -1,6 +1,4 @@
-require('isomorphic-fetch')
-
-const { json } = require('./json')
+import { json } from './json'
 
 const message = 'Got it!'
 

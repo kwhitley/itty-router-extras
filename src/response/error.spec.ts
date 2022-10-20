@@ -1,6 +1,4 @@
-require('isomorphic-fetch')
-
-const { error } = require('./error')
+import { error } from './error'
 
 const message = 'You messed up!'
 

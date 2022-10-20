@@ -1,12 +1,10 @@
-require('isomorphic-fetch')
-
-const { ThrowableRouter } = require('../router/ThrowableRouter')
-const { withContent } = require('./withContent')
+import { ThrowableRouter } from '../router/ThrowableRouter'
+import { withContent } from './withContent'
 
 describe('middleware/withContent', () => {
   it('returns with json payload', async () => {
     const router = ThrowableRouter()
-    const handler = jest.fn(req => req.content)
+    const handler = vi.fn((req) => req.content)
     const payload = { foo: 'bar' }
 
     router.post('/', withContent, handler)

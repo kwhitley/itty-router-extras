@@ -1,6 +1,4 @@
-require('isomorphic-fetch')
-
-const { text } = require('./text')
+import { text } from './text'
 
 const message = 'Got it!'
 
