@@ -11,9 +11,16 @@
   <img alt="" src="https://img.shields.io/twitter/follow/kevinrwhitley.svg?style=social&label=Follow" />
 </a>
 
-An assortment of delicious (yet lightweight and tree-shakeable) extras for the calorie-light [itty-router](https://www.npmjs.com/package/itty-router).  These further simplify routing code!
+# Deprecation Notice: 
+With the release of [itty-router v4.x](https://www.npmjs.com/package/itty-router), itty-router-extras have moved in-house to the core library, and thus, this project will no longer be actively maintained.  To switch over, simply update your itty-router package, then include the previous "extras" off the main library:
 
-#### NOTICE: This package will soon become part of itty-router core (as itty-router/extras).  At such time, this library will be deprecated in favor of just using the core library.  Stay tuned or [follow me on Twitter](https://twitter.com/kevinrwhitley), where I'll be announcing it the moment it hits NPM!
+```js
+import { error, json, Router } from 'itty-router'
+```
+
+The one notable exception is that `missing` has been omitted (after some discussion with the community).  Now, we only expose `error`, so you'll have to more explicitly call `error(404)` instead of `missing()`.
+
+# Original README
 
 ## Installation
 
