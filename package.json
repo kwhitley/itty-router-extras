@@ -1,6 +1,6 @@
 {
   "name": "itty-router-extras",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "An assortment of delicious extras for the calorie-light itty-router.",
   "main": "./index.js",
   "types": "./dist/itty-router-extras.d.ts",
@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "lint": "npx eslint src",
-    "test": "yarn lint && jest --verbose --coverage src",
+    "test": "jest --verbose --coverage src",
     "verify": "echo 'verifying module...' && yarn build && yarn test",
     "dev": "yarn lint && jest --verbose --watch src",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
