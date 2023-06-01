@@ -1,12 +1,8 @@
 {
   "name": "itty-router-extras",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "An assortment of delicious extras for the calorie-light itty-router.",
   "main": "./index.js",
-  "types": "./dist/itty-router-extras.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
   "keywords": [
     "router",
     "cloudflare",
