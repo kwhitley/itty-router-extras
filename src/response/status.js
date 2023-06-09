@@ -1,6 +1,6 @@
 const { json } = require('./json')
 
-const status = (status, message) =>
+const status = (status, message, options = {}) =>
   message
   ? json({
       ...(typeof message === 'object'
@@ -9,7 +9,7 @@ const status = (status, message) =>
             status,
             message,
           }),
-    }, { status })
-  : new Response(null, { status })
+    }, { status, ...options })
+  : new Response(null, { status, ...options })
 
 module.exports = { status }
