@@ -6,7 +6,7 @@ const withContent = async request => {
   try {
     if (contentType) {
       if (contentType.includes('application/json')) {
-        request.content = await request.json()
+        request.content = await request.clone().json()
       }
     }
   } catch (err) {} // silently fail on error
