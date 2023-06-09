@@ -21,6 +21,7 @@ export function status(status: number, message: string | object): Response;
 export function error(status?: number, content?: string | object): Response;
 export function missing(message?: string | object): Response;
 export function text(message: string, options?: ResponseInit): Response;
+export function addCorsHeaders(request: Request, options?: CorsOptions): (response: Response) => Response;
 
 // MiddleWare
 export function withContent(request: Request): void;
